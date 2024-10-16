@@ -7,6 +7,16 @@ import java.util.List;
 
 public interface EvaluationRepository extends JpaRepository<Evaluation, EvaluationId> {
     List<Evaluation> findByScoreDateStartingWith(String month);
-    List<Evaluation> findByAgentId(Integer agentId);
-}
 
+    List<Evaluation> findByAgentId(Integer agentId);
+
+    List<Evaluation> findByScoreDateStartingWithAndIsTargetFixedTrue(String month);
+
+    List<Evaluation> findByScoreDateStartingWithAndTeamCodeAndIsTargetFixedTrue(String month, String teamCode);
+
+    List<Evaluation> findByScoreDateStartingWithAndIsTargetFixedTrueOrderByRankingAsc(String month);
+
+    List<Evaluation> findByScoreDateStartingWithAndTeamCodeAndIsTargetFixedTrueOrderByRankingAsc(String month, String teamCode);
+
+
+}

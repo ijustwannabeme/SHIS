@@ -18,19 +18,27 @@ public class EvaluationController {
     private EmployeeService employeeService;
 
     @GetMapping("/evaluations/{month}")
-    public ResponseEntity<List<Evaluation>> getMonthlyEvaluations(@PathVariable String month) {
+    public ResponseEntity<List<Evaluation>> getMonthlyEvaluations(
+            @PathVariable String month,
+            @RequestParam(required = false) String teamCode) {
+        if (teamCode != null) {
+            return ResponseEntity.ok(evaluationService.getMonthlyEvaluationsByTeam(month, teamCode));
+        }
         return ResponseEntity.ok(evaluationService.getMonthlyEvaluations(month));
     }
 
-//    @GetMapping("/evaluations/{month}/rank")
-//    public ResponseEntity<List<EvaluationList>> calculateMonthlyRanking(@PathVariable String month) {
-//        return ResponseEntity.ok(evaluationService.calculateMonthlyRanking(month));
-//    }
+    @PostMapping("/evaluations/{month}/rank")
+    public ResponseEntity<List<Evaluation>> calculateMonthlyRanking(
+            @PathVariable String month,
+            @RequestParam(required = false) String teamCode) {
+        return ResponseEntity.ok(evaluationService.calculateAndSaveMonthlyRanking(month, teamCode));
+    }
 
-    @PostMapping("/evaluations/{month}/confirm")
-    public ResponseEntity<Void> confirmMonthlyEvaluations(@PathVariable String month) {
-        evaluationService.confirmMonthlyEvaluations(month);
-        return ResponseEntity.ok().build();
+    @GetMapping("/evaluations/{month}/rank")
+    public ResponseEntity<List<Evaluation>> getMonthlyRankings(
+            @PathVariable String month,
+            @RequestParam(required = false) String teamCode) {
+        return ResponseEntity.ok(evaluationService.getMonthlyRankings(month, teamCode));
     }
 
     @GetMapping("/evaluations/{month}/changes")
@@ -43,21 +51,21 @@ public class EvaluationController {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-//    @GetMapping("/employees/{id}")
-//    public ResponseEntity<Employee> getEmployeeById(@PathVariable Integer id) {
-//        return ResponseEntity.ok(employeeService.getEmployeeById(id));
-//    }
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Integer id) {
+        return ResponseEntity.ok(employeeService.getEmployeeByAgentId(id));
+    }
 
     @GetMapping("/employees/{id}/evaluations")
     public ResponseEntity<List<Evaluation>> getEmployeeEvaluations(@PathVariable Integer id) {
         return ResponseEntity.ok(evaluationService.getEmployeeEvaluations(id));
     }
 
-//    @PostMapping("/evaluations")
-//    public ResponseEntity<Void> saveAndConfirmEvaluation(@RequestBody Evaluation evaluation) {
-//        evaluationService.saveAndConfirmEvaluation(evaluation);
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/evaluations")
+    public ResponseEntity<Void> saveAndConfirmEvaluation(@RequestBody Evaluation evaluation) {
+        evaluationService.saveAndConfirmEvaluation(evaluation);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/evaluations/target")
     public ResponseEntity<Void> confirmEvaluationTarget(@RequestBody Evaluation evaluation) {

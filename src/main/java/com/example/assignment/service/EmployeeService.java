@@ -1,6 +1,7 @@
 package com.example.assignment.service;
 
 import com.example.assignment.entity.Employee;
+import com.example.assignment.entity.EmployeeId;
 import com.example.assignment.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,13 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-//    public Employee getEmployeeById(Integer id) {
-//        return employeeRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
-//    }
+    public Employee getEmployeeByAgentId(Integer agentId) {
+        return employeeRepository.findByAgentId(agentId)
+                .orElseThrow(() -> new RuntimeException("Employee not found with agentId: " + agentId));
+    }
+
+    public Employee getEmployeeByAgentIdAndTeamCode(Integer agentId, String teamCode) {
+        return employeeRepository.findByAgentIdAndTeamCode(agentId, teamCode)
+                .orElseThrow(() -> new RuntimeException("Employee not found with agentId: " + agentId + " and teamCode: " + teamCode));
+    }
 }

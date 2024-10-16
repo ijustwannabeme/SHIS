@@ -1,14 +1,18 @@
 package com.example.assignment.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "change_history")
-@IdClass(ChangeHistory.class)
+@IdClass(ChangeHistoryId.class)
 public class ChangeHistory {
     @Id
     @Column(name = "score_date")
