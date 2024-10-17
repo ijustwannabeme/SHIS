@@ -131,4 +131,54 @@ public class EvaluationService {
         evaluation.setIsTargetFixed(true);
         evaluationRepository.save(evaluation);
     }
+
+//    @Transactional
+//    public void transferConfirmedEvaluationsToList(String month) {
+//        List<Evaluation> confirmedEvaluations = evaluationRepository.findByScoreDateStartingWithAndIsScoreFixedTrueAndRankingIsNotNull(month);
+//
+//        for (Evaluation eval : confirmedEvaluations) {
+//            EvaluationList evalList = new EvaluationList();
+//            evalList.setScoreDate(eval.getScoreDate());
+//            evalList.setAgentId(eval.getAgentId());
+//            evalList.setTeamCode(eval.getTeamCode());
+//            evalList.setTotalScore(eval.getScore1() + eval.getScore2());
+//            evalList.setRanking(eval.getRanking());
+//
+//            evaluationListRepository.save(evalList);
+//        }
+//    }
+@Transactional
+public void transferConfirmedEvaluationsToList(String month) {
+    // Step 1: Update all evaluations with isScoreFixed = false to true
+    List<Evaluation> evaluationsToUpdate = evaluationRepository.findByScoreDateStartingWithAndIsScoreFixedFalse(month);
+    for (Evaluation eval : evaluationsToUpdate) {
+        eval.setIsScoreFixed(true);
+        evaluationRepository.save(eval);
+
+        // Optionally, you can add change history here
+        ChangeHistory changeHistory = new ChangeHistory(
+                eval.getScoreDate(),
+                eval.getAgentId(),
+                "false",
+                "true",
+                "IsScoreFixed",
+                java.time.LocalDate.now().toString()
+        );
+        changeHistoryRepository.save(changeHistory);
+    }
+
+    // Step 2: Transfer all evaluations to evaluation_list
+    List<Evaluation> allEvaluations = evaluationRepository.findByScoreDateStartingWithAndRankingIsNotNull(month);
+
+    for (Evaluation eval : allEvaluations) {
+        EvaluationList evalList = new EvaluationList();
+        evalList.setScoreDate(eval.getScoreDate());
+        evalList.setAgentId(eval.getAgentId());
+        evalList.setTeamCode(eval.getTeamCode());
+        evalList.setTotalScore(eval.getScore1() + eval.getScore2());
+        evalList.setRanking(eval.getRanking());
+
+        evaluationListRepository.save(evalList);
+    }
+}
 }

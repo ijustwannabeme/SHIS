@@ -18,5 +18,8 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Evaluati
 
     List<Evaluation> findByScoreDateStartingWithAndTeamCodeAndIsTargetFixedTrueOrderByRankingAsc(String month, String teamCode);
 
+    List<Evaluation> findByScoreDateStartingWithAndIsScoreFixedTrueAndRankingIsNotNull(String month);
 
+    List<Evaluation> findByScoreDateStartingWithAndIsScoreFixedFalse(String month);
+    List<Evaluation> findByScoreDateStartingWithAndRankingIsNotNull(String month);
 }

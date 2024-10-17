@@ -72,4 +72,10 @@ public class EvaluationController {
         evaluationService.confirmEvaluationTarget(evaluation);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/evaluations/{month}/finalized")
+    public ResponseEntity<Void> transferConfirmedEvaluationsToList(@PathVariable String month) {
+        evaluationService.transferConfirmedEvaluationsToList(month);
+        return ResponseEntity.ok().build();
+    }
 }
