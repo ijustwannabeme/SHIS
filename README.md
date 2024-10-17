@@ -1,8 +1,11 @@
 # 사내 영업직원 평가시스템
 
+
 ## 프로젝트 개요
 
 매월 직원들을 평가하는 사내 시스템
+
+
 
 ### 주요 기능
 
@@ -11,6 +14,8 @@
 - 월별 팀 평가 순위 산정
 - 개인 평가 관리
 - 평가 목록 확정
+
+
 
 ## 기술 스택
 
@@ -69,6 +74,4 @@
 
 ## 연락처
 
-프로젝트 관리자 - [이메일 주소]
-
-프로젝트 링크: [https://github.com/yourusername/your-repo-name](https://github.com/yourusername/your-repo-name)
+프로젝트 관리자 - [liarcrown@naver.com]
